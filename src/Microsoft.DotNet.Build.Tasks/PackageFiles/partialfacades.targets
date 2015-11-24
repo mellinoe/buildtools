@@ -3,6 +3,30 @@
 
   <UsingTask TaskName="PrereleaseResolveNuGetPackageAssets" AssemblyFile="$(ToolsDir)Microsoft.DotNet.Build.Tasks.dll"/>
 
+  <!-- Default properties for partial facade projects -->
+  <PropertyGroup Condition="'$(IsPartialFacadeAssembly)' == 'true'">
+    <PostFilterNugetReferences>true</PostFilterNugetReferences>
+  </PropertyGroup>
+
+  <!-- PostFilterNuGetReferences
+       Filters the set of references generated from the ResolveNugetPackages target. This is a default target for partial facade
+         assemblies, and can be optionally used in other projects as well, by setting PostFilterNugetReferences=true. The target
+         contains some logic for removing well-known assemblies from the "Microsoft.DotNet.CoreCLR" package, except for "mscorlib.dll".
+  -->
+  <Target Name="PostFilterNugetReferences"
+    Condition="'$(PostFilterNugetReferences)' == 'true'"
+    AfterTargets="ResolveNugetPackages">
+
+    <ItemGroup>
+      <_ReferenceFileNamesToInclude Include="@(Reference)" Condition="'@(PrivateFacadeReference->'%(Identity)')' == '%(Reference.FileName)'" />
+      <ReferenceRemovals Include="@(Reference)" Exclude="@(_ReferenceFileNamesToInclude)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Remove="@(ReferenceRemovals)" />
+    </ItemGroup>
+  </Target>
+
   <!-- Hook both partial-facade-related targets into TargetsTriggeredByCompilation. This will cause them
           to only be invoked upon a successful compilation; they can conceptualized as an extension
           of the assembly compilation process.
