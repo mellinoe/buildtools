@@ -6,7 +6,8 @@ __TOOLRUNTIME_DIR=$3
 __TOOLS_DIR=$(cd "$(dirname "$0")"; pwd -P)
 __MICROBUILD_VERSION=0.2.0
 __PORTABLETARGETS_VERSION=0.1.1-dev
-__MSBUILD_CONTENT_JSON="{\"dependencies\": {\"MicroBuild.Core\": \"${__MICROBUILD_VERSION}\", \"Microsoft.Portable.Targets\": \"${__PORTABLETARGETS_VERSION}\"},\"frameworks\": {\"dnxcore50\": {},\"net46\": {}}}"
+__ILASM_VERSION=1.0.2-rc2-23916
+__MSBUILD_CONTENT_JSON="{\"dependencies\": {\"MicroBuild.Core\": \"${__MICROBUILD_VERSION}\", \"Microsoft.Portable.Targets\": \"${__PORTABLETARGETS_VERSION}\", \"Microsoft.NETCore.ILAsm\":\"${__ILASM_VERSION}\"},\"frameworks\": {\"dnxcore50\": {},\"net46\": {}}}"
 
 __BUILDERRORLEVEL=0
 
@@ -76,6 +77,7 @@ cd "$__TOOLS_DIR/portableTargets"
 "$__DOTNET_CMD" restore --source https://dotnet.myget.org/F/dotnet-buildtools/api/v3/index.json --packages "$__TOOLS_DIR/portableTargets/packages"
 cp -R "$__TOOLS_DIR/portableTargets/packages/Microsoft.Portable.Targets/${__PORTABLETARGETS_VERSION}/contentFiles/any/any/." "$__TOOLRUNTIME_DIR/."
 cp -R "$__TOOLS_DIR/portableTargets/packages/MicroBuild.Core/${__MICROBUILD_VERSION}/build/." "$__TOOLRUNTIME_DIR/."
+cp -R "$__TOOLS_DIR/portableTargets/packages/Microsoft.NETCore.ILAsm/${__ILASM_VERSION}/tools/." "$__TOOLRUNTIME_DIR/."
 
 # Temporary Hacks to fix couple of issues in the msbuild and roslyn nuget packages
 cp "$__TOOLRUNTIME_DIR/corerun" "$__TOOLRUNTIME_DIR/corerun.exe"
