@@ -10,6 +10,7 @@
         "Microsoft.DotNet.PlatformAbstractions": "1.2.0-beta-001090",
         "Microsoft.Net.Compilers.netcore": "2.0.0-rc",
         "Microsoft.Net.Compilers.Targets.NetCore": "0.1.5-dev",
+        "Microsoft.NETCore.ILAsm": "1.1.0",
         "Microsoft.Cci": "4.0.0-rc4-24217-00",
         "Microsoft.Composition": "1.0.30",
         "System.Diagnostics.Process": "4.1.0",
